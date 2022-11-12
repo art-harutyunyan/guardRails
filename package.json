@@ -1,0 +1,14 @@
+{
+  "name": "guardrailstask",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx cypress run"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^11.0.1"
+  }
+}
