@@ -1,6 +1,6 @@
-describe('Login to website and add an item', () => {
+describe('Login to website and add 2 item', () => {
 
-    beforeEach( () => {
+    before( () => {
         cy.visit('/#/login');
         cy.wait(3000);
         cy.closeWelcomePopup();
@@ -13,15 +13,14 @@ describe('Login to website and add an item', () => {
         cy.clearBasket();
     });
 
-    it('Add one item to basket', () => {
-        // adding 1 item to the basket
-        cy.addToBasket(1);
-        // comparing the basket items count with the API response
+    it('Add two items to basket', () => {
+        
+        cy.addToBasket(2);
         cy.validateItemsCountInBasket();
         cy.get('[aria-label="Show the shopping cart"]').click();
-        cy.get('mat-row').should('have.length', 1);
+        cy.get('mat-row').should('have.length', 2);
         cy.get('#checkoutButton').click();
         cy.addNewAddress();
-    });
-});
+    });    
 
+});

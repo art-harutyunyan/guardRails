@@ -154,3 +154,70 @@ Cypress.Commands.add('clearBasket', () => {
         });
     });
 });
+
+// searching for an item
+Cypress.Commands.add('searchWithKeyword', (keyword) => {
+    
+    // getting all items from the API
+    cy.request({
+        method: 'GET',
+        url: Cypress.env('search'),
+        headers: {
+            authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+    }).then(res => {
+
+        // initial validation on the search-box functionality
+        cy.get('mat-search-bar').click();
+        cy.get('div[class="mat-form-field-infix ng-tns-c119-6"]')
+            .find('input')
+            .clear()
+            .should('be.empty')
+            .type('abc')
+            .should('have.value', 'abc')
+            .clear()
+            .should('be.empty')
+            .type(`${keyword}{enter}`)
+            .wait(1000);
+        
+        // validating the search result row
+        cy.get('div[class="ng-star-inserted"]')
+            .find('span').eq(0)
+            .should('have.text', 'Search Results - ')
+            .siblings('span')
+            .should('have.text', keyword);
+
+        // filtering the items which match the condition
+        let searchItems = res.body.data.filter((item) => {
+            
+            if( item.name.toLowerCase().includes(keyword.toLowerCase()) 
+                || item.description.toLowerCase().includes(keyword.toLowerCase())) {
+                return item
+            } 
+        });
+
+        // if the array of items is not empty
+        if(searchItems.length > 0) {
+            
+            cy.get('div[class="mat-grid-tile-content"]').should('have.length', searchItems.length);
+            cy.get('div[class="mat-grid-tile-content"]')
+                .find('div[class="item-name"]').then(itemName => {
+                    expect(itemName.text().toLowerCase()).to.contain(keyword.toLowerCase());
+                });
+        }
+        // if there is no item found to match the keyword
+        else {
+            cy.get('app-search-result')
+                .find('mat-card-title')
+                .find('span')
+                .should('have.text', ' No results found ')
+            cy.get('mat-card').find('img')
+                .should('have.attr', 'src', "assets/public/images/products/no-results.png");
+            cy.get('mat-card-content')
+                    .find('span')
+                    .should('have.text', " Try adjusting your search to find what you're looking for. ");
+        }
+        
+        cy.get('mat-search-bar').click();
+    });
+});
