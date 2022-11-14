@@ -7,6 +7,7 @@ module.exports = defineConfig({
     },
     baseUrl: "https://juice-shop.guardrails.ai/",
     $schema: "https://on.cypress.io/cypress.schema.json",
+    video: false
   }
 
 });

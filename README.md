@@ -16,8 +16,11 @@ These instructions will let you to run the tests on your machine
 `node` v16.10.0 should be installed
 The automated test files are created on latest Cypress version `11.0.1`
 
-### Installing
+### Installing and Running
 
 1) once cloned the repository run `npm install`
-2) once the dependencies are installed run `npm run test` to run the tests
+2) once the dependencies are installed 
+    a) to tun integration tests run `npm run integration`
+    b) to run cypress tests run `npm run cypress`
+    c) to run all tests run `npm run all`
 
